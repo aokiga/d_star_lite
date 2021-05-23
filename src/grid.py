@@ -1,4 +1,4 @@
-from cell import CellType
+from src.cell import CellType
 import math
 
 

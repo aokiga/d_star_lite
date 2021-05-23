@@ -1,6 +1,10 @@
+passable = ['.', 'G', 'W', 'S']
 
 def read_map_from_ai_file(path):
+
     tasks_file = open(path)
+
+    tasks_file.readline()
 
     height = int(tasks_file.readline().split()[1])
     width = int(tasks_file.readline().split()[1])
