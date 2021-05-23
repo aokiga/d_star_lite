@@ -1,9 +1,12 @@
-from node import Node
 import math
 
+from src.node import Node
+from src.open_base import OpenBase
 
-class Open:
+
+class OpenAStar(OpenBase):
     def __init__(self):
+        super().__init__()
         self.elements = []
 
     def __iter__(self):
