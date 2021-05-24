@@ -1,3 +1,4 @@
+from src.cell import CellType
 from src.grid import Grid
 from src.node import Node
 from test.movingAI_loader import read_map_from_ai_file
@@ -16,7 +17,7 @@ def draw(gridMap: Grid, start: Node = None, goal: Node = None, path: list = None
     draw = ImageDraw.Draw(im)
     for i in range(gridMap.height):
         for j in range(gridMap.width):
-            if (gridMap.cells[i][j].type == 1):
+            if (gridMap.cells[i][j].type == CellType.WALL):
                 draw.rectangle((j * k, i * k, (j + 1) * k - 1, (i + 1) * k - 1), fill=(70, 80, 80))
 
     if nodesOpened is not None:
