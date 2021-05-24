@@ -21,19 +21,6 @@ for size in maps_sizes:
         cur_maps.append(grid)
     maps.append(cur_maps)
 
-sensor_maps = []
-denses = [random.uniform(0.1, 0.3) for _ in range(100)]
-for dens in denses:
-    c = [[0 for _ in range(64)] for _ in range(25)]
-    for i in range(25):
-        for j in range(64):
-            if (random.random() < dens):
-                c[i][j] = 1
-    c[0][0] = 0
-    c[-1][-1] = 0
-    grid = Grid(25, 64, c)
-    sensor_maps.append(grid)
-
 
 def test_rnd(search_function, *args):
     results = dict()
