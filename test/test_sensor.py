@@ -1,5 +1,7 @@
 import random
 
+random.seed(100500)
+
 from src.grid import Grid, ObservableGrid
 from src.cell import *
 
@@ -7,8 +9,6 @@ sensors_radiuses = [1, 5, 10, 15, 20]
 
 sensor_maps = []
 denses = [random.uniform(0.1, 0.3) for _ in range(100)]
-
-
 
 for dens in denses:
     c = [[0 for _ in range(64)] for _ in range(25)]
