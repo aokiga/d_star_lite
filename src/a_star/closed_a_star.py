@@ -1,8 +1,10 @@
+from src.closed_base import ClosedBase
 from src.node import Node
 
 
-class Closed:
+class ClosedAStar(ClosedBase):
     def __init__(self):
+        super().__init__()
         self.elements = set()
 
     def __iter__(self):
