@@ -1,7 +1,7 @@
 passable = ['.', 'G', 'W', 'S']
 
-def read_map_from_ai_file(path):
 
+def read_map_from_ai_file(path):
     tasks_file = open(path)
 
     tasks_file.readline()
@@ -33,7 +33,8 @@ def read_map_from_ai_file(path):
         if i == height:
             break
 
-    return width, height, cells
+    return height, width, cells
+
 
 def read_tasks_from_ai_file(path, amount):
     tasks = []
