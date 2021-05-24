@@ -9,6 +9,7 @@ class OpenAStarReplanning(OpenBase):
         self.open = OpenAStar()
 
     def reset(self):
+        self.nodes_added += self.open.nodes_added
         self.open = OpenAStar()
 
     def __iter__(self):

@@ -1,12 +1,10 @@
-import math
-
 from src.node import Node
 from src.open_base import OpenBase
 
 from heapdict import heapdict
 
 
-class OpenAStar(OpenBase):
+class OpenDStar(OpenBase):
     def __init__(self):
         super().__init__()
         self.elements = dict()
@@ -22,7 +20,6 @@ class OpenAStar(OpenBase):
         return len(self.elements) == 0
 
     def add_node(self, item: Node):
-        super().nodes_added(item)
         key = item.i, item.j
         if key in self.elements:
             if item < self.elements[key]:

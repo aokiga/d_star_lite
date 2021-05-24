@@ -60,12 +60,14 @@ class ObservableGrid(Grid):
         return True
 
     def update_vision(self, x, y, radius):
-        flag = False
+        new_cells = []
         for i in range(max(0, x - radius), min(x + radius + 1, self.width)):
             for j in range(max(0, y - radius), min(y + radius + 1, self.height)):
                 if euclid_distance(i, j, x, y) > radius:
                     continue
+                if self.cells[i][j].is_visible:
+                    continue
                 if self.is_visible(x, y, i, j):
                     self.cells[i][j].is_visible = True
-                    flag = True
-        return flag
+                    new_cells.append((i, j))
+        return new_cells

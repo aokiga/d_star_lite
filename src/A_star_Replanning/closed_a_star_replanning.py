@@ -9,6 +9,7 @@ class ClosedAStarReplanning(ClosedBase):
         self.closed = ClosedAStar()
 
     def reset(self):
+        self.nodes_added += self.closed.nodes_added
         self.closed = ClosedAStar()
 
     def __iter__(self):
@@ -18,6 +19,7 @@ class ClosedAStarReplanning(ClosedBase):
         return self.closed.__len__()
 
     def add_node(self, item: Node):
+        super().nodes_added(item)
         self.closed.add_node(item)
 
     def was_expanded(self, item: Node):

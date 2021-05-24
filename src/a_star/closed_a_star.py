@@ -16,6 +16,7 @@ class ClosedAStar(ClosedBase):
     def add_node(self, item: Node):
         if item in self.elements:
             return
+        super().nodes_added(item)
         self.elements.add(item)
 
     def was_expanded(self, item: Node):

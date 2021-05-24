@@ -3,7 +3,7 @@ from src.node import Node
 
 class ClosedBase:
     def __init__(self):
-        pass
+        self.nodes_added = 0
 
     def __iter__(self):
         return iter([])
@@ -12,7 +12,7 @@ class ClosedBase:
         return 0
 
     def add_node(self, item: Node):
-        return
+        self.nodes_added += 1
 
     def was_expanded(self, item: Node):
         return False
