@@ -22,7 +22,7 @@ class OpenAStar(OpenBase):
         return len(self.elements) == 0
 
     def add_node(self, item: Node):
-        super().nodes_added(item)
+        super().add_node(item)
         key = item.i, item.j
         if key in self.elements:
             if item < self.elements[key]:
