@@ -1,11 +1,11 @@
 from src.grid import Grid
 from src.node import Node
-from src.movingAI_loader import read_map_from_ai_file
+from test.movingAI_loader import read_map_from_ai_file
 from PIL import Image, ImageDraw
 import matplotlib.pyplot as plt
 import numpy as np
 
-datasets = ['test1']
+datasets = ['test1', 'test2', 'test3']
 
 
 def draw(gridMap: Grid, start: Node = None, goal: Node = None, path: list = None, nodesExpanded=None, nodesOpened=None):
