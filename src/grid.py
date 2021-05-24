@@ -16,7 +16,7 @@ class Grid:
         return (0 <= j < self.width) and (0 <= i < self.height)
 
     def traversable(self, i, j):
-        return not self.cells[i][j].is_visible or self.cells[i][j].type != CellType.WALL
+        return self.cells[i][j].traversable()
 
     def get_neighbors(self, i, j):
         delta = [(-1, 0), (0, 1), (1, 0), (0, -1)]
