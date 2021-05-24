@@ -15,11 +15,11 @@ for dens in denses:
     for i in range(25):
         for j in range(64):
             if (random.random() < dens):
-                c[i][j] = Cell(1)
+                c[i][j] = Cell(CellType.WALL)
             else:
-                c[i][j] = Cell(0)
-    c[0][0] = Cell(2)
-    c[-1][-1] = Cell(3)
+                c[i][j] = Cell(CellType.EMPTY)
+    c[0][0] = Cell(CellType.START)
+    c[-1][-1] = Cell(CellType.END)
     grid = ObservableGrid(25, 64, c)
     sensor_maps.append(grid)
 

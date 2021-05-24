@@ -25,6 +25,10 @@ class Grid:
             x, y = dx + i, dy + j
             if self.in_bounds(x, y) and self.traversable(x, y):
                 neighbors.append((x, y))
+            else:
+                pass
+                #if (self.in_bounds(x, y)):
+                    #print("lkjdnjkas", x, y)
         return neighbors
 
 
@@ -61,8 +65,8 @@ class ObservableGrid(Grid):
 
     def update_vision(self, x, y, radius):
         new_cells = []
-        for i in range(max(0, x - radius), min(x + radius + 1, self.width)):
-            for j in range(max(0, y - radius), min(y + radius + 1, self.height)):
+        for i in range(max(0, x - radius), min(x + radius + 1, self.height)):
+            for j in range(max(0, y - radius), min(y + radius + 1, self.width)):
                 if euclid_distance(i, j, x, y) > radius:
                     continue
                 if self.cells[i][j].is_visible:
