@@ -19,7 +19,6 @@ class ClosedAStarReplanning(ClosedBase):
         return self.closed.__len__()
 
     def add_node(self, item: Node):
-        super().add_node(item)
         self.closed.add_node(item)
 
     def was_expanded(self, item: Node):

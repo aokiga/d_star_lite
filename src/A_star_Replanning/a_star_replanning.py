@@ -17,8 +17,21 @@ def a_star_replanning(grid, start, end, heuristic=manhattan_distance, vision=1):
     res_path = [cur]
     OPEN = OpenAStarReplanning()
     CLOSED = ClosedAStarReplanning()
-    path = []
-    pos = 0
+
+    #print("pizdec")
+    found_flag, last_v = a_star(grid, cur, end, OPEN, CLOSED, heuristic)
+    #print("pizdec")
+    if not found_flag:
+        OPEN.reset()
+        CLOSED.reset()
+        return [], OPEN, CLOSED
+    #print("suka")
+
+    path = reconstruct_path(last_v)
+    cur = path[0]
+    pos = 1
+    res_path += [cur]
+
     while cur != end:
         new_cells = grid.update_vision(cur[0], cur[1], vision)
         if not new_cells:

@@ -10,10 +10,10 @@ class OpenDStar(OpenBase):
         self.elements = dict()
         self.heap = heapdict()
 
-    def len(self):
+    def __len__(self):
         return len(self.elements)
 
-    def iter(self):
+    def __iter__(self):
         return iter(self.elements.values())
 
     def is_empty(self):

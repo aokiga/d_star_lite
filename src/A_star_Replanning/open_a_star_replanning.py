@@ -16,7 +16,7 @@ class OpenAStarReplanning(OpenBase):
         return self.open.__iter__()
 
     def __len__(self):
-        return self.open.__len__()
+        return len(self.open)
 
     def is_empty(self):
         return self.open.is_empty()
