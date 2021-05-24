@@ -2,7 +2,9 @@ from src.D_star_Lite.node_d_star import NodeD
 from src.a_star.closed_a_star import ClosedAStar
 from src.a_star.open_a_star import OpenAStar
 
+
 #TODO("пока что нихуя не работает")
+
 
 def update_vertex():
     pass

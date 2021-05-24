@@ -1,6 +1,8 @@
 from src.A_star_Replanning.closed_a_star_replanning import ClosedAStarReplanning
 from src.A_star_Replanning.open_a_star_replanning import OpenAStarReplanning
 from src.a_star.a_star import a_star
+from src.heuristics import manhattan_distance
+
 
 def reconstruct_path(v):
     ans = []
@@ -10,7 +12,7 @@ def reconstruct_path(v):
     return ans[::-1]
 
 
-def a_star_replanning(grid, start, end, heuristic, vision):
+def a_star_replanning(grid, start, end, heuristic=manhattan_distance, vision=1):
     cur = start
     res_path = [cur]
     OPEN = OpenAStarReplanning()
