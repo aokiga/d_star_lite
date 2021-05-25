@@ -42,10 +42,10 @@ class DStarLite:
         while len(self.open) and (self.open.find_best()[1] < self.calc_key(self.start) or self.rhs[self.start] != self.g[self.start]):
             k_old = self.open.find_best()[1]
             v = self.open.get_best_node()
-            self.closed.add_node(v)
             if k_old < self.calc_key(v):
                 self.open.add_with_key(v, self.calc_key(v))
             elif self.g[v] > self.rhs[v]:
+                self.closed.add_node(v)
                 self.g[v] = self.rhs[v]
                 for coord in self.grid.get_neighbors(v[0], v[1]):
                     self.update_vertex(coord)

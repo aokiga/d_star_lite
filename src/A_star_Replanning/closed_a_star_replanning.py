@@ -1,4 +1,4 @@
-from src.A_star.closed_a_star import ClosedAStar
+from src.a_star.closed_a_star import ClosedAStar
 from src.closed_base import ClosedBase
 from src.node import Node
 

@@ -1,4 +1,4 @@
-from src.A_star.open_a_star import OpenAStar
+from src.a_star.open_a_star import OpenAStar
 from src.node import Node
 from src.open_base import OpenBase
 

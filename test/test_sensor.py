@@ -24,16 +24,16 @@ for dens in denses:
     sensor_maps.append(grid)
 
 
-def test_tensor(search_function, *args):
+def test_sensor(search_function, *args):
     results = dict()
     for radius in sensors_radiuses:
         va = 0
         exp = 0
         for test_map in sensor_maps:
-            nodes_opened, nodes_expanded = search_function(test_map, 0, 0, 24, 63, *args)
+            f, p, nodes_opened, nodes_expanded = search_function(test_map, (0, 0), (24, 63), *args)
 
-            va += nodes_opened.va / (64 * 25)
-            exp += nodes_expanded.exp / (64 * 25)
+            va += nodes_opened.nodes_added / (64 * 25)
+            exp += nodes_expanded.nodes_added / (64 * 25)
 
         results[radius] = (va / 100.0, exp / 100.0)
     return results
