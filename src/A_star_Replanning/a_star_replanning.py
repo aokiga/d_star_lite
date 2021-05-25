@@ -1,6 +1,6 @@
 from src.A_star_Replanning.closed_a_star_replanning import ClosedAStarReplanning
 from src.A_star_Replanning.open_a_star_replanning import OpenAStarReplanning
-from src.a_star.a_star import a_star
+from src.A_star.a_star import a_star
 from src.heuristics import manhattan_distance
 
 

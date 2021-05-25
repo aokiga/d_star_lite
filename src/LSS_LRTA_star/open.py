@@ -3,7 +3,7 @@ from src.node import Node
 from src.open_base import OpenBase
 
 
-class OpenAStarReplanning(OpenBase):
+class OpenLRTA(OpenBase):
     def __init__(self):
         super().__init__()
         self.open = OpenAStar()

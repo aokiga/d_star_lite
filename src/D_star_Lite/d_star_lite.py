@@ -77,7 +77,7 @@ class DStarLite:
             if next_v == self.start:
                 break
             self.start = next_v
-            print(self.start)
+            #print(self.start)
             res_path.append(self.start)
             new_vertexes = self.grid.update_vision(self.start[0], self.start[1], self.vision)
             if new_vertexes:

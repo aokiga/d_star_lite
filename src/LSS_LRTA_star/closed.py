@@ -3,7 +3,7 @@ from src.closed_base import ClosedBase
 from src.node import Node
 
 
-class ClosedAStarReplanning(ClosedBase):
+class ClosedLRTA(ClosedBase):
     def __init__(self):
         super().__init__()
         self.closed = ClosedAStar()
