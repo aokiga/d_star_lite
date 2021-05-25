@@ -19,16 +19,10 @@ class OpenDStar(OpenBase):
     def is_empty(self):
         return len(self.elements) == 0
 
-    def add_node(self, item: Node):
+    def add_with_key(self, item, prior):
         super().add_node(item)
-        key = item.i, item.j
-        if key in self.elements:
-            if item < self.elements[key]:
-                self.elements[key] = item
-                self.heap[key] = item.f
-        else:
-            self.elements[key] = item
-            self.heap[key] = item.f
+        self.elements[item] = item
+        self.heap[item] = prior
 
     def get_best_node(self):
         key, _ = self.heap.popitem()
@@ -37,9 +31,9 @@ class OpenDStar(OpenBase):
     def find_best(self):
         return self.heap.peekitem()
 
-    def in_heap(self, i, j):
-        return (i, j) in self.elements
+    def in_heap(self, v):
+        return v in self.elements
 
-    def remove(self, i, j):
-        self.heap.pop((i, j))
-        self.elements.pop((i, j))
+    def remove(self, v):
+        self.heap.pop(v)
+        self.elements.pop(v)

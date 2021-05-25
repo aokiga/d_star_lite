@@ -1,91 +1,97 @@
 import math
 
-from src.D_star_Lite.closed_d_star import ClosedDStar
-from src.D_star_Lite.node_d_star import NodeD
 from src.D_star_Lite.open_d_star import OpenDStar
-from src.cell import CellType
+from src.closed_base import ClosedBase
+from src.heuristics import manhattan_distance
 
 
-def calc_key(node, k):
-    return min(node.g, node.rhs) + node.h + k, min(node.g, node.rhs)
+class DStarLite:
+    def __init__(self, grid, start, end, heuristics, vision):
+        self.grid = grid
+        self.open = OpenDStar()
+        self.closed = ClosedBase()
+        self.start = start
+        self.end = end
+        self.vision = vision
+        self.g = dict()
+        self.rhs = dict()
+        self.g[end] = math.inf
+        self.rhs[end] = 0
+        self.rhs[start] = self.g[start] = math.inf
+        self.k = 0
+        self.h = heuristics
+
+    def calc_key(self, v):
+        return min(self.g[v], self.rhs[v]) + self.h(self.start[0], self.start[1], v[0], v[1]) + self.k, min(self.g[v], self.rhs[v])
+
+    def update_vertex(self, v):
+        if v not in self.g:
+            self.g[v] = math.inf
+        if v != self.end:
+            rhs = math.inf
+            for coord in self.grid.get_neighbors(v[0], v[1]):
+                if coord in self.g:
+                    rhs = min(rhs, self.g[coord] + 1)
+            self.rhs[v] = rhs
+        if self.open.in_heap(v):
+            self.open.remove(v)
+        if self.g[v] != self.rhs[v]:
+            self.open.add_with_key(v, self.calc_key(v))
+
+    def compute_shortest_path(self):
+        while len(self.open) and (self.open.find_best()[1] < self.calc_key(self.start) or self.rhs[self.start] != self.g[self.start]):
+            k_old = self.open.find_best()[1]
+            v = self.open.get_best_node()
+            self.closed.add_node(v)
+            if k_old < self.calc_key(v):
+                self.open.add_with_key(v, self.calc_key(v))
+            elif self.g[v] > self.rhs[v]:
+                self.g[v] = self.rhs[v]
+                for coord in self.grid.get_neighbors(v[0], v[1]):
+                    self.update_vertex(coord)
+            else:
+                self.g[v] = math.inf
+                if self.grid.cells[v[0]][v[1]].traversable():
+                    self.update_vertex(v)
+                for coord in self.grid.get_neighbors(v[0], v[1]):
+                    self.update_vertex(coord)
+
+    def run(self):
+        self.open.add_with_key(self.end, self.calc_key(self.end))
+
+        prev = self.start
+        res_path = [self.start]
+
+        self.grid.update_vision(self.start[0], self.start[1], self.vision)
+
+        self.compute_shortest_path()
+        while self.start != self.end:
+            next_v = self.start
+            minD = math.inf
+            for coord in self.grid.get_neighbors(self.start[0], self.start[1]):
+                if coord not in self.g:
+                    continue
+                if minD > self.g[coord] + 1:
+                    next_v = coord
+                    minD = self.g[coord] + 1
+            if next_v == self.start:
+                break
+            self.start = next_v
+            print(self.start)
+            res_path.append(self.start)
+            new_vertexes = self.grid.update_vision(self.start[0], self.start[1], self.vision)
+            if new_vertexes:
+                self.k += self.h(prev[0], prev[1], self.start[0], self.start[1])
+                prev = self.start
+                for v in new_vertexes:
+                    if self.grid.cells[v[0]][v[1]].traversable():
+                        self.update_vertex(v)
+                    for coord in self.grid.get_neighbors(v[0], v[1]):
+                        self.update_vertex(coord)
+                self.compute_shortest_path()
+
+        return self.start == self.end, res_path, self.open, self.closed
 
 
-def update_vertex(grid, i, j, end, OPEN, CLOSED, dist, heuristics, k):
-    if (i, j) not in dist:
-        dist[(i, j)] = NodeD(i, j, g=math.inf, rhs=math.inf, h=heuristics(i, j, end[0], end[1]), k=k)
-    if (i, j) != end:
-        rhs = math.inf
-        for coord in grid.get_neighbors(i, j):
-            rhs = min(rhs, dist[coord].g + 1)
-        dist[(i, j)].rhs = rhs
-    if OPEN.in_heap((i, j)):
-        OPEN.remove(i, j)
-    if CLOSED.in_closed(i, j):
-        CLOSED.remove(i, j)
-    if dist[(i, j)].g != dist[(i, j)].rhs:
-        dist[(i, j)].f = calc_key(dist[(i, j)], k)
-        OPEN.add_node(dist[(i, j)])
-    else:
-        CLOSED.add_node(dist[(i, j)])
-
-
-def compute_shortest_path(grid, cur, end, OPEN, CLOSED, dist, heuristics, k):
-    while OPEN.find_best()[1] < dist[cur].f or dist[cur].f != dist[cur].g:
-        v = OPEN.get_best_node()
-        if v.f < calc_key(v, k):
-            dist[(v.i, v.j)].f = calc_key(dist[(v.i, v.j)], k)
-            OPEN.add_node(dist[(v.i, v.j)])
-        elif v.g > v.rhs:
-            v.g = v.rhs
-            dist[(v.i, v.j)] = v
-            for coord in grid.get_neighbors(v.i, v.j):
-                if grid.cells[coord[0]][coord[1]].traversable():
-                    update_vertex(grid, coord[0], coord[1], end, OPEN, CLOSED, dist, heuristics, k)
-        else:
-            v.g = math.inf
-            if grid.cells[v.i][v.y].traversable():
-                update_vertex(grid, v.i, v.j, end, OPEN, CLOSED, dist, heuristics, k)
-            for coord in grid.get_neighbors(v.i, v.j):
-                if grid.cells[coord[0]][coord[1]].traversable():
-                    update_vertex(grid, coord[0], coord[1], end, OPEN, CLOSED, dist, heuristics, k)
-
-
-
-def d_star_lite(grid, start, end, heuristic, vision):
-    cur = start
-    prev = cur
-    res_path = [cur]
-    dist = dict()
-    OPEN = OpenDStar()
-    CLOSED = ClosedDStar()
-    k = 0
-    grid.update_vision(start[0], start[1], vision)
-    h_start = heuristic(start[0], start[1], end[0], end[1])
-    node_start = NodeD(start[0], start[1], 0, h_start, None, k)
-    dist[start] = node_start
-    OPEN.add_node(node_start)
-
-    compute_shortest_path(grid, cur, end, OPEN, CLOSED, dist, heuristic, k)
-    while cur != end:
-        next_v = cur
-        minD = math.inf
-        for coord in grid.get_neighbors(cur[0], cur[1]):
-            if coord not in dist:
-                continue
-            if minD > dist[coord].g + 1:
-                next_v = coord
-                minD = dist[coord].g + 1
-        cur = next_v
-        res_path.append(cur)
-        new_vertexes = grid.update_vision(cur[0], cur[1], vision)
-        if new_vertexes:
-            k += heuristic(prev[0], prev[1], cur[0], cur[1])
-            prev = cur
-            for (x, y) in new_vertexes:
-                if grid.cells[x][y].traversable():
-                    update_vertex(grid, x, y, end, OPEN, CLOSED, dist, heuristic, k)
-                for coord in grid.get_neighbors(x, y):
-                    update_vertex(grid, coord[0], coord[1], end, OPEN, CLOSED, dist, heuristic, k)
-            compute_shortest_path(grid, cur, end, OPEN, CLOSED, dist, heuristic, k)
-
-    return res_path, OPEN, CLOSED
+def d_star_lite(grid, start, end, heuristic=manhattan_distance, vision=1):
+    return DStarLite(grid, start, end, heuristic, vision).run()
