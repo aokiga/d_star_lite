@@ -23,7 +23,7 @@ def a_star_replanning(grid, start, end, heuristic=manhattan_distance, vision=1):
     if not found_flag:
         OPEN.reset()
         CLOSED.reset()
-        return [], OPEN, CLOSED
+        return False, res_path, OPEN, CLOSED
 
     path = reconstruct_path(last_v)
     cur = path[0]
@@ -53,4 +53,4 @@ def a_star_replanning(grid, start, end, heuristic=manhattan_distance, vision=1):
         res_path += [cur]
     OPEN.reset()
     CLOSED.reset()
-    return res_path, OPEN, CLOSED
+    return found_flag, res_path, OPEN, CLOSED

@@ -20,6 +20,7 @@ class OpenDStar(OpenBase):
         return len(self.elements) == 0
 
     def add_node(self, item: Node):
+        super().add_node(item)
         key = item.i, item.j
         if key in self.elements:
             if item < self.elements[key]:
@@ -32,3 +33,13 @@ class OpenDStar(OpenBase):
     def get_best_node(self):
         key, _ = self.heap.popitem()
         return self.elements.pop(key)
+
+    def find_best(self):
+        return self.heap.peekitem()
+
+    def in_heap(self, i, j):
+        return (i, j) in self.elements
+
+    def remove(self, i, j):
+        self.heap.pop((i, j))
+        self.elements.pop((i, j))
