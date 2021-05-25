@@ -94,4 +94,4 @@ class DStarLite:
 
 
 def d_star_lite(grid, start, end, heuristic=manhattan_distance, vision=1):
-    return DStarLite(grid, start, end, heuristic, vision).run()
+    return DStarLite(grid, end, start, heuristic, vision).run()
