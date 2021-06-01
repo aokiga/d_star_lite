@@ -4,6 +4,7 @@ from src.A_star.open_a_star import OpenAStar
 from src.node import Node
 from src.open_base import OpenBase
 
+
 class OpenAStarH(OpenBase):
     def __init__(self):
         super().__init__()
@@ -55,9 +56,13 @@ class OpenLRTA(OpenBase):
     def is_empty(self):
         return self.open.is_empty()
 
-    def add_node(self, item: Node):
-        self.open.add_node(item)
-        self.open_h.add_node(item)
+    def add_node(self, item: Node, flag=True):
+        if flag:
+            if self.open.add_node(item):
+                self.open_h.add_node(item)
+        else:
+            self.open.add_node(item)
+            self.open_h.add_node(item)
 
     def get_best_node(self):
         ans = self.open.get_best_node()
@@ -68,3 +73,10 @@ class OpenLRTA(OpenBase):
         ans = self.open_h.get_best_node()
         self.open.remove(ans)
         return ans
+
+    def get_best_key(self):
+        key, prior = self.open.heap.peekitem()
+        return prior
+
+    def contains(self, item: Node):
+        return self.open.contains(item)

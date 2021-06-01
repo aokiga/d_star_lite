@@ -51,7 +51,7 @@ class LSS_LRTA_star:
             self.closed.add_node(v)
             for coords in self.grid.get_neighbors(v.i, v.j):
                 h_next = self.heuristic(coords[0], coords[1], self.end[0], self.end[1])
-                if h_next in self.h:
+                if coords in self.h:
                     h_next = self.h[coords]
                 else:
                     self.h[coords] = h_next
@@ -73,7 +73,8 @@ class LSS_LRTA_star:
                 if self.closed.was_expanded(to_tmp) and self.h[coord] > 1 + self.h[(v.i, v.j)]:
                     self.h[coord] = 1 + self.h[(v.i, v.j)]
                     to = Node(coord[0], coord[1], math.inf, self.h[coord], v)
-                    self.open.add_node(to)
+                    if not self.open.contains(to):
+                        self.open.add_node(to, False)
 
     def run(self):
         res_path = [self.start]
@@ -90,7 +91,6 @@ class LSS_LRTA_star:
                     ans = v
             path = reconstruct_path(ans)
             self.dijkstra()
-            prev = self.start
             for to in path:
                 if self.grid.cells[to[0]][to[1]].traversable():
                     self.start = to
@@ -98,8 +98,9 @@ class LSS_LRTA_star:
                     self.grid.update_vision(self.start[0], self.start[1], self.vision)
                 else:
                     break
-            if self.start == prev:
-                break
+            #print(self.start)
+            #print(self.h[self.start])
+            #print(self.grid.cells[self.start[0]][self.start[1]].traversable())
             self.open.reset()
             self.closed.reset()
         return self.start == self.end, res_path, self.open, self.closed

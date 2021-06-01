@@ -25,12 +25,16 @@ class OpenAStar(OpenBase):
         super().add_node(item)
         key = item.i, item.j
         if key in self.elements:
-            if item < self.elements[key]:
+            if item.g < self.elements[key].g:
                 self.elements[key] = item
                 self.heap[key] = item.f
+                return True
+            else:
+                return False
         else:
             self.elements[key] = item
             self.heap[key] = item.f
+            return True
 
     def get_best_node(self):
         key, _ = self.heap.popitem()
@@ -40,3 +44,6 @@ class OpenAStar(OpenBase):
         key = item.i, item.j
         self.heap.pop(key)
         return self.elements.pop(key)
+
+    def contains(self, item: Node):
+        return (item.i, item.j) in self.elements
