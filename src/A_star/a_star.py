@@ -1,9 +1,12 @@
 import math
 
+from src.A_star.closed_a_star import ClosedAStar
+from src.A_star.open_a_star import OpenAStar
+from src.heuristics import manhattan_distance
 from src.node import Node
 
 
-def a_star(grid, start, end, open_set, closed_set, heuristic, lookahead=math.inf):
+def a_star(grid, start, end, open_set=OpenAStar(), closed_set=ClosedAStar(), heuristic=manhattan_distance, lookahead=math.inf):
     found_flag = False
     last_node = None
     start_node = Node(start[0], start[1], 0, heuristic(start[0], start[1], end[0], end[1]))

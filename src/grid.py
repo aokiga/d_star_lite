@@ -33,9 +33,8 @@ class Grid:
 
 
 class ObservableGrid(Grid):
-    def __init__(self, height=0, width=0, cells=None, vision_radius=5):
+    def __init__(self, height=0, width=0, cells=None):
         super().__init__(height, width, cells)
-        self.vision_radius = vision_radius
 
     def is_visible(self, x1, y1, x2, y2):
         if x1 == x2:
@@ -75,3 +74,8 @@ class ObservableGrid(Grid):
                     self.cells[i][j].is_visible = True
                     new_cells.append((i, j))
         return new_cells
+
+    def make_visible(self, flag):
+        for l in self.cells:
+            for cell in l:
+                cell.is_visible = flag

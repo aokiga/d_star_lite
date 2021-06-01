@@ -1,5 +1,7 @@
 import random
 
+from test.test_rnd import is_good_map
+
 random.seed(100500)
 
 from src.grid import Grid, ObservableGrid
@@ -14,14 +16,15 @@ for dens in denses:
     c = [[0 for _ in range(64)] for _ in range(25)]
     for i in range(25):
         for j in range(64):
-            if (random.random() < dens):
+            if random.random() < dens:
                 c[i][j] = Cell(CellType.WALL)
             else:
                 c[i][j] = Cell(CellType.EMPTY)
     c[0][0] = Cell(CellType.START)
     c[-1][-1] = Cell(CellType.END)
     grid = ObservableGrid(25, 64, c)
-    sensor_maps.append(grid)
+    if is_good_map(grid, (0, 0), (24, 63)):
+        sensor_maps.append(grid)
 
 
 def test_sensor(search_function, *args):

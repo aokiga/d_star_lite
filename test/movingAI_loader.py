@@ -1,3 +1,5 @@
+from src.cell import CellType, Cell
+
 passable = ['.', 'G', 'W', 'S']
 
 
@@ -19,9 +21,9 @@ def read_map_from_ai_file(path):
         j = 0
         for c in l:
             if c in passable:
-                cells[i][j] = 0
+                cells[i][j] = Cell(CellType.EMPTY)
             else:
-                cells[i][j] = 1
+                cells[i][j] = Cell(CellType.WALL)
             j += 1
             if j == width:
                 break

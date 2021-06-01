@@ -17,7 +17,7 @@ def draw(gridMap: Grid, start: Node = None, goal: Node = None, path: list = None
     draw = ImageDraw.Draw(im)
     for i in range(gridMap.height):
         for j in range(gridMap.width):
-            if (gridMap.cells[i][j].type == CellType.WALL):
+            if gridMap.cells[i][j].type == CellType.WALL:
                 draw.rectangle((j * k, i * k, (j + 1) * k - 1, (i + 1) * k - 1), fill=(70, 80, 80))
 
     if nodesOpened is not None:
@@ -32,8 +32,8 @@ def draw(gridMap: Grid, start: Node = None, goal: Node = None, path: list = None
 
     if path is not None:
         for step in path:
-            if (step is not None):
-                if (gridMap.traversable(step.i, step.j)):
+            if step is not None:
+                if gridMap.traversable(step.i, step.j):
                     draw.rectangle((step.j * k, step.i * k, (step.j + 1) * k - 1, (step.i + 1) * k - 1),
                                    fill=(52, 152, 219), width=0)
                 else:
