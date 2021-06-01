@@ -107,4 +107,4 @@ class LSS_LRTA_star:
 
 
 def lss_lrta_star(grid, start, end, heuristic=manhattan_distance, vision=1, lookahead=25):
-    return LSS_LRTA_star(grid, start, end, heuristic, vision, max(lookahead, vision + 5)).run()
+    return LSS_LRTA_star(grid, start, end, heuristic, vision, lookahead).run()

@@ -5,6 +5,7 @@ from src.A_star.closed_a_star import ClosedAStar
 from src.A_star.open_a_star import OpenAStar
 from src.cell import Cell
 from src.grid import *
+from src.heuristics import manhattan_distance
 
 random.seed(100500)
 
@@ -33,7 +34,7 @@ for size in maps_sizes:
         c[0][0] = Cell(CellType.EMPTY)
         c[-1][-1] = Cell(CellType.EMPTY)
         grid = ObservableGrid(size, size, c)
-        if is_good_map(grid, (0, 0), (size-1, size-1)):
+        if is_good_map(grid, (0, 0), (size - 1, size - 1)):
             cur_maps.append(grid)
     maps[size] = cur_maps
 
@@ -43,11 +44,13 @@ def test_rnd(search_function, *args):
     for size in maps_sizes:
         va = 0
         exp = 0
+        length = 0
         for test_map in maps[size]:
-            status, p, nodes_opened, nodes_expanded = search_function(test_map, (0, 0), (size - 1, size - 1), *args)
+            status, p, nodes_opened, nodes_expanded = search_function(test_map, (0, 0), (size - 1, size - 1), manhattan_distance, 1, *args)
 
             va += nodes_opened.nodes_added / (size * size)
             exp += nodes_expanded.nodes_added / (size * size)
+            length += len(p) / (size * size)
 
-        results[size] = (va / 100.0, exp / 100.0)
+        results[size] = (va / 100.0, exp / 100.0, length / 100.0)
     return results

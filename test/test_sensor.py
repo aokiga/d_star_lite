@@ -1,5 +1,6 @@
 import random
 
+from src.heuristics import manhattan_distance
 from test.test_rnd import is_good_map
 
 random.seed(100500)
@@ -32,11 +33,13 @@ def test_sensor(search_function, *args):
     for radius in sensors_radiuses:
         va = 0
         exp = 0
+        length = 0
         for test_map in sensor_maps:
-            f, p, nodes_opened, nodes_expanded = search_function(test_map, (0, 0), (24, 63), *args)
+            f, p, nodes_opened, nodes_expanded = search_function(test_map, (0, 0), (24, 63), manhattan_distance, 1, *args)
 
-            va += nodes_opened.nodes_added / (64 * 25)
-            exp += nodes_expanded.nodes_added / (64 * 25)
+            va += nodes_opened.nodes_added / (64 * 25.0)
+            exp += nodes_expanded.nodes_added / (64 * 25.0)
+            length += len(p) / (64 * 25.0)
 
-        results[radius] = (va / 100.0, exp / 100.0)
+        results[radius] = (va / 100.0, exp / 100.0, length/100.0)
     return results

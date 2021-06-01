@@ -44,7 +44,6 @@ class OpenLRTA(OpenBase):
 
     def reset(self):
         self.nodes_added += self.open.nodes_added
-        self.nodes_added += self.open_h.nodes_added
         self.open = OpenAStar()
         self.open_h = OpenAStarH()
 
