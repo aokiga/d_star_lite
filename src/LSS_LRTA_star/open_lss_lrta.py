@@ -22,13 +22,8 @@ class OpenAStarH(OpenBase):
     def add_node(self, item: Node):
         super().add_node(item)
         key = item.i, item.j
-        if key in self.elements:
-            if item.h < self.elements[key].h:
-                self.elements[key] = item
-                self.heap[key] = item.h
-        else:
-            self.elements[key] = item
-            self.heap[key] = item.h
+        self.elements[key] = item
+        self.heap[key] = item.h
 
     def get_best_node(self):
         key, _ = self.heap.popitem()

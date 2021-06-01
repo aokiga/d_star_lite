@@ -42,12 +42,13 @@ class LSS_LRTA_star:
             if expansions >= self.lookahead:
                 break
             v = self.open.get_best_node()
-            self.closed.add_node(v)
-            expansions += 1
             if v == end_node:
+                self.open.add_node(v)
                 found_flag = True
                 last_node = v
                 break
+            expansions += 1
+            self.closed.add_node(v)
             for coords in self.grid.get_neighbors(v.i, v.j):
                 h_next = self.heuristic(coords[0], coords[1], self.end[0], self.end[1])
                 if h_next in self.h:
@@ -87,8 +88,9 @@ class LSS_LRTA_star:
                 if v.f < min_dist:
                     min_dist = v.f
                     ans = v
-            self.dijkstra()
             path = reconstruct_path(ans)
+            self.dijkstra()
+            prev = self.start
             for to in path:
                 if self.grid.cells[to[0]][to[1]].traversable():
                     self.start = to
@@ -96,6 +98,8 @@ class LSS_LRTA_star:
                     self.grid.update_vision(self.start[0], self.start[1], self.vision)
                 else:
                     break
+            if self.start == prev:
+                break
             self.open.reset()
             self.closed.reset()
         return self.start == self.end, res_path, self.open, self.closed
