@@ -35,3 +35,8 @@ class OpenAStar(OpenBase):
     def get_best_node(self):
         key, _ = self.heap.popitem()
         return self.elements.pop(key)
+
+    def remove(self, item: Node):
+        key = item.i, item.j
+        self.heap.pop(key)
+        return self.elements.pop(key)

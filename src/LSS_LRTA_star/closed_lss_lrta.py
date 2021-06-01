@@ -23,3 +23,6 @@ class ClosedLRTA(ClosedBase):
 
     def was_expanded(self, item: Node):
         return self.closed.was_expanded(item)
+
+    def remove(self, item: Node):
+        return self.closed.remove(item)

@@ -21,3 +21,6 @@ class ClosedAStar(ClosedBase):
 
     def was_expanded(self, item: Node):
         return item in self.elements
+
+    def remove(self, item: Node):
+        self.elements.remove(item)
